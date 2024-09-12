@@ -1,0 +1,150 @@
+/* Main calculator container */
+@font-face{
+    font-family:'digital-clock-font';
+    src: url('./digital-7\ \(mono\).ttf');
+   }
+
+#calculator {
+    width: 390px; /* Adjusted for a rectangular layout */
+    margin: 50px auto;
+    padding: 15px;
+    border: 2px solid #333;
+    border-radius: 10px;
+    background-color: #f4f4f4;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Output screen */
+#outputBox {
+    width: 90%;
+    /* height: 80px; */
+    border: 2px solid black;
+    text-align: right;
+    padding: 10px;
+    font-size: 24px;
+    color: #333;
+    background-color: #fff;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    overflow-wrap: break-word; /* Ensure text wraps within the box */
+}
+
+#outputDisplay {
+    width: 100%;
+    height: 30%;
+    font-size: 0.75em;
+    font-family: 'digital-clock-font';
+    overflow-wrap: break-word; /* Ensure text wraps within the box */
+    white-space: normal; /* Allow text to wrap */
+}
+
+#outputText {
+    width: 100%;
+    height: 70%;
+    font-size: 3em;
+    font-family: 'digital-clock-font';
+    overflow-wrap: break-word; /* Ensure text wraps within the box */
+    white-space: normal; /* Allow text to wrap */
+}
+
+/* Grid layout for the buttons */
+#buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 equal columns */
+    gap: 10px;
+    width: 100%; /* Fill container */
+    grid-auto-rows: 60px; /* Make height equal to width (square buttons) */
+}
+
+/* Common button styling */
+button {
+    font-size: 24px;
+    border-radius: 5px;
+    border: none;
+    background-color: #ffffff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+/* Hover effect for buttons */
+button:hover {
+    background-color: #d1d1d1;
+}
+
+/* Style for operators */
+#divide, #multiply, #subtract, #add {
+    background-color: #ff8c00;
+    color: white;
+}
+
+#divide:hover, #multiply:hover, #subtract:hover, #add:hover {
+    background-color: #e67300;
+}
+
+/* Style for clear, delete, and calculate buttons */
+#clear {
+    background-color: #ff4c4c;
+    color: white;
+}
+
+#delete {
+    background-color: #ffa500;
+    color: white;
+}
+
+#clear:hover {
+    background-color: #ff1a1a;
+}
+
+#delete:hover {
+    background-color: #ff8c00;
+}
+
+/* Calculate button spanning two rows */
+#calculate {
+    background-color: #4caf50;
+    color: white;
+    grid-row: span 2;
+    height: 130px; /* Taller to span two rows */
+}
+
+#calculate:hover {
+    background-color: #45a049;
+}
+
+/* Special button layout for zero */
+#zero {
+    grid-column: span 2; /* Spans two columns */
+}
+
+/* Responsive design for smaller screens */
+@media (max-width: 320px) {
+    button {
+        font-size: 18px;
+    }
+
+    #outputText {
+        font-size: 20px;
+    }
+}
+
+#clear, #delete {
+    background-color: #ff4c4c;
+    color: white;
+    font-size: 1.5em;
+}
+
+#clear:hover, #delete:hover {
+    background-color: #ff1a1a;
+}
+
+#dot, #calculate{
+    font-size: 2.5em;
+}
+#add, #subtract, #divide{
+    font-size: 2em;
+}

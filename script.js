@@ -33,18 +33,6 @@ const multiplyButton = document.getElementById('multiply');
 const divideButton = document.getElementById('divide');
 const CalculateButton = document.getElementById('calculate');
 
-const clearButton = document.getElementById('clear');
-const deleteButton = document.getElementById('delete');
-
-clearButton.addEventListener('click',()=>{
-    firstInput = '';
-    secondInput = '';
-    operation = '';
-    result = '';
-    outputBox.textContent = '';
-    operandHold = true;
-    StateMachine = '100';
-})
 function operationButton(operationName,operationSign){
     if(StateMachine == '100'){
         operation = operationName;
@@ -64,19 +52,11 @@ function operationButton(operationName,operationSign){
             operandHold = true;}
         }
         else if (StateMachine == '222') {
-            // if(operandHold==true){
-            //     operation = operationName;
-            //     outputBox.textContent = operationSign;
-            //     firstInput = result;
-            //     outputBox.textContent = firstInput;
-            //     secondInput = '';}
-            // else{
             firstInput = result;
             outputBox.textContent = firstInput;
             secondInput = '';
             operation = operationName;
             StateMachine = '221';
-        // }
         }
 }
 
