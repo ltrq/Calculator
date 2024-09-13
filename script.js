@@ -1,36 +1,47 @@
+// Initial values and state
 let firstInput = '';
 let secondInput = '';
 let operation = '';
 let result = '';
 let operandHold = true;
+let stateMachine = '100'; // StateMachine = abc where a = First Input State, b = Operation State, c = Second Input State
 
-let StateMachine = '100'; // StateMachine = abc where a = First Input State, b = Operation State, c = Second Input State
-                          // 0 = Before Entering State
-                          // 1 = During State
-                          // 2 = After State
-
+// DOM elements
 const outputBox = document.getElementById('outputText');
 const statusBox = document.getElementById('outputDisplay');
+const topButton = document.getElementById('TopButton');
+const bottomButton = document.getElementById('BottomButton');
+const leftButton = document.getElementById('LeftButton');
+const rightButton = document.getElementById('RightButton');
+const calculateButton = document.getElementById('calculate');
 
-function OnOverflowChanged() {
-    if (outputBox.scrollHeight > outputBox.clientHeight) {
-        console.log('overflow');
-    }
+// Utility functions
+function autoScroll() {
+    outputBox.scrollTop = outputBox.scrollHeight;
+    statusBox.scrollLeft = statusBox.scrollWidth;
 }
 
-// Auto-scroll function for the statusBox on mouse wheel
-statusBox.addEventListener("wheel", (e) => {
-    statusBox.scrollLeft += e.deltaY;
-}, { passive: true });
+function updateButtonVisibility() {
+    const outputScrollTop = outputBox.scrollTop;
+    const outputScrollHeight = outputBox.scrollHeight;
+    const outputClientHeight = outputBox.clientHeight;
 
-// Handle operations
-function operationButton(operationName, operationSign) {
-    OnOverflowChanged();
+    const statusScrollLeft = statusBox.scrollLeft;
+    const statusScrollWidth = statusBox.scrollWidth;
+    const statusClientWidth = statusBox.clientWidth;
 
-    switch (StateMachine) {
+    topButton.innerHTML = outputScrollTop === 0 ? '' : '&#9650;'; // Up arrow
+    bottomButton.innerHTML = (outputScrollTop + outputClientHeight >= outputScrollHeight) ? '' : '&#9660;'; // Down arrow
+
+    leftButton.innerHTML = statusScrollLeft === 0 ? '' : '&#9664;'; // Left arrow
+    rightButton.innerHTML = (statusScrollLeft + statusClientWidth >= statusScrollWidth) ? '' : '&#9654;'; // Right arrow
+}
+
+function handleOperationButton(operationName, operationSign) {
+    switch (stateMachine) {
         case '100': // Initial state: First input
             operation = operationName;
-            StateMachine = '221';
+            stateMachine = '221';
             statusBox.textContent += operationSign;
             break;
 
@@ -39,7 +50,7 @@ function operationButton(operationName, operationSign) {
                 operation = operationName;
                 statusBox.textContent = statusBox.textContent.slice(0, -1) + operationSign; // Replace operation sign
             } else { // Perform calculation if second input exists
-                result = operations(parseFloat(firstInput), parseFloat(secondInput), operation);
+                result = performOperation(parseFloat(firstInput), parseFloat(secondInput), operation);
                 firstInput = result;
                 secondInput = '';
                 operation = operationName;
@@ -53,34 +64,19 @@ function operationButton(operationName, operationSign) {
             firstInput = result;
             secondInput = '';
             operation = operationName;
-            StateMachine = '221';
+            stateMachine = '221';
             outputBox.textContent = firstInput;
             statusBox.textContent = firstInput + operationSign;
             break;
 
         default:
-            console.error('Unknown StateMachine value:', StateMachine);
+            console.error('Unknown stateMachine value:', stateMachine);
     }
 
-    // Auto-scroll
-    statusBox.scrollLeft = statusBox.scrollWidth;
-    outputBox.scrollTop = outputBox.scrollHeight;
+    autoScroll();
 }
 
-// Handle calculation on "=" click
-document.getElementById('calculate').addEventListener('click', () => {
-    if (StateMachine === '221' && secondInput !== '') {
-        result = operations(parseFloat(firstInput), parseFloat(secondInput), operation);
-        outputBox.textContent = result;
-        operandHold = true;
-        StateMachine = '222';
-        statusBox.textContent += '=';
-        statusBox.scrollLeft = statusBox.scrollWidth;
-    }
-});
-
-// Operations logic
-function operations(first, second, operand) {
+function performOperation(first, second, operand) {
     switch (operand) {
         case 'add': return first + second;
         case 'subtract': return first - second;
@@ -90,11 +86,10 @@ function operations(first, second, operand) {
     }
 }
 
-// Handle number pad input
-function numPadButtons(numpadNumber) {
+function handleNumPadButtonClick(numpadNumber) {
     const numContent = numpadNumber.textContent;
 
-    switch (StateMachine) {
+    switch (stateMachine) {
         case '100': // Initial state: First input
             firstInput += numContent;
             outputBox.textContent = firstInput;
@@ -111,29 +106,71 @@ function numPadButtons(numpadNumber) {
         case '222': // After calculation, reset for new input
             firstInput = numContent;
             secondInput = '';
-            StateMachine = '100';
+            stateMachine = '100';
             outputBox.textContent = firstInput;
             statusBox.textContent = firstInput;
             break;
 
         default:
-            console.error('Unknown StateMachine value:', StateMachine);
+            console.error('Unknown stateMachine value:', stateMachine);
     }
 
-    // Auto-scroll
-    outputBox.scrollTop = outputBox.scrollHeight;
-    statusBox.scrollLeft = statusBox.scrollWidth;
-    OnOverflowChanged();
+    autoScroll();
 }
 
-// Event listeners for number pad
-document.querySelectorAll('.numpad').forEach(button => {
-    button.addEventListener('click', () => numPadButtons(button));
+// Event Listeners
+outputBox.addEventListener('scroll', updateButtonVisibility);
+statusBox.addEventListener('scroll', updateButtonVisibility);
+
+topButton.addEventListener('click', () => outputBox.scrollTop -= 25); // Scroll up
+bottomButton.addEventListener('click', () => outputBox.scrollTop += 25); // Scroll down
+leftButton.addEventListener('click', () => statusBox.scrollLeft -= 50); // Scroll left
+rightButton.addEventListener('click', () => statusBox.scrollLeft += 50); // Scroll right
+
+statusBox.addEventListener('wheel', (e) => statusBox.scrollLeft += e.deltaY, { passive: true });
+
+calculateButton.addEventListener('click', () => {
+    if (stateMachine === '221' && secondInput !== '') {
+        result = performOperation(parseFloat(firstInput), parseFloat(secondInput), operation);
+        outputBox.textContent = result;
+        operandHold = true;
+        stateMachine = '222';
+        statusBox.textContent += '=';
+    }
+    autoScroll();
 });
 
-// Event listeners for operation pad
+document.querySelectorAll('.numpad').forEach(button => {
+    button.addEventListener('click', () => handleNumPadButtonClick(button));
+});
+
 document.querySelectorAll('.operationpad').forEach(button => {
     button.addEventListener('click', () => {
-        operationButton(button.getAttribute('data-operation'), button.getAttribute('data-sign'));
+        handleOperationButton(button.getAttribute('data-operation'), button.getAttribute('data-sign'));
     });
 });
+
+document.getElementById('clear').addEventListener('click', () => {
+  firstInput = '';
+  secondInput = '';
+  operation = '';
+  result = '';
+  operandHold = true;
+  stateMachine = '100';
+  outputBox.textContent = 'Clear all Entry';
+  statusBox.textContent = '';
+  autoScroll();
+})
+
+document.getElementById('delete').addEventListener('click', () => {
+  if (stateMachine === '221' && secondInput !== '') {
+    secondInput = secondInput.slice(0, -1);
+    outputBox.textContent = secondInput;
+    statusBox.textContent = statusBox.textContent.slice(0, -1);
+  } else if (stateMachine === '100' && firstInput !== '') {
+    firstInput = firstInput.slice(0, -1);
+    outputBox.textContent = firstInput;
+    statusBox.textContent = statusBox.textContent.slice(0, -1);
+  }
+  autoScroll();
+})

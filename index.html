@@ -9,21 +9,29 @@
 <body>
     <div id="calculator">
         <div id="outputBox">
-            <div id = "outputDisplay">welcome to my</div>
-            <div id ="outputText">Calculator</div>
+            <div id ="topDisplay">
+                <div id = "LeftButton"></div>
+                <div id = "outputDisplay">welcome to my</div>
+                <div id = "RightButton"></div>
+            </div>
+            <div id="bottomDisplay">
+                <div id="TopButton"></div>
+                <div id ="outputText">Calculator</div>
+                <div id="BottomButton"></div>
+            </div>
         </div>
         <div id="buttons">
             <!-- First row with only operators -->
-            <button id="add" class="operationpad" data-operation="add" data-sign="+">+</button>
-            <button id="subtract" class="operationpad" data-operation="subtract" data-sign="-">-</button>
-            <button id="multiply" class="operationpad" data-operation="multiply" data-sign="×">×</button>
-            <button id="divide" class="operationpad" data-operation="divide" data-sign="÷">÷</button>
+            <button id="add"        class="operationpad" data-operation="add"       data-sign="+">+</button>
+            <button id="subtract"   class="operationpad" data-operation="subtract"  data-sign="-">-</button>
+            <button id="multiply"   class="operationpad" data-operation="multiply"  data-sign="×">×</button>
+            <button id="divide"     class="operationpad" data-operation="divide"    data-sign="÷">÷</button>
             
             <!-- Second row with Clear, Delete, and Numbers -->
             <button class ="numpad" id="seven">7</button>
             <button class ="numpad" id="eight">8</button>
             <button class ="numpad" id="nine">9</button>
-            <button id="clear">C</button>
+            <button id="clear">CE</button>
             
             <!-- Third row -->
             <button class ="numpad" id="four">4</button>

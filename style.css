@@ -4,6 +4,11 @@
     src: url('./digital-7 (mono).ttf');
 }
 
+@font-face {
+    font-family: 'calculator-font';
+    src: url('./casio-calculator-font.ttf');
+}
+
 #calculator {
     width: 390px; /* Adjusted for a rectangular layout */
     margin: 50px auto;
@@ -17,7 +22,7 @@
 /* Output screen */
 #outputBox {
     width: 90%;
-    height: 120px;
+    height: 150px;
     border: 2px solid black;
     text-align: right;
     padding: 10px;
@@ -31,26 +36,69 @@
     flex-direction: column;
 }
 
-#outputDisplay, #outputText {
+#topDisplay {
     width: 100%;
-    font-family: 'digital-clock-font';
+    height: 30%;
+    display: flex;
+    flex:row;
+    justify-content: center;
+}
+#RightButton,
+#LeftButton{
+    width: 5%;
+    text-align: center;
 }
 
 #outputDisplay {
-    height: 30%;
-    font-size: 1.3em;
+    width: 90%;
+    font-family: 'calculator-font';
+    height: 100%;
+    font-size: 0.7em;
     overflow-x: auto;
     overflow-y: hidden;
     white-space: nowrap;
 }
 
-#outputText {
+#bottomDisplay{
+    width: 100%;
     height: 70%;
-    font-size: 2.5em;
+    display: flex;
+    flex-direction: column;
+}
+
+#TopButton,
+#BottomButton{
+    height: 15%;
+    text-align: center;
+}
+
+#outputText {
+    width: 100%;
+    font-family: 'digital-clock-font';
+    height: 70%;
+    font-size: 2em;
     overflow-wrap: break-word;
     white-space: normal;
     overflow-y: auto;
 }
+
+#RightButton,
+#LeftButton,
+#TopButton,
+#BottomButton {
+    color: #919191;
+    font-size: 18px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    text-align: center; /* Center the arrow symbols */
+}
+
+#TopButton{
+    padding-bottom: 5px;
+}
+
 
 ::-webkit-scrollbar {
     display: none;
