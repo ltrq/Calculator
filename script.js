@@ -1,169 +1,139 @@
-
-let firstInput='';
-let secondInput='';
+let firstInput = '';
+let secondInput = '';
 let operation = '';
 let result = '';
 let operandHold = true;
 
-let StateMachine = '100';  // StateMachine = abc where
-                           // a = First Input State
-                           // b = Operation State
-                           // c = Second Input State
-                           // value of a-b-c is 0, 1, or 2 with
-                           // 0 = before state
-                           // 1 = during state
-                           // 2 = after state
+let StateMachine = '100'; // StateMachine = abc where a = First Input State, b = Operation State, c = Second Input State
+                          // 0 = Before Entering State
+                          // 1 = During State
+                          // 2 = After State
 
 const outputBox = document.getElementById('outputText');
+const statusBox = document.getElementById('outputDisplay');
 
-const numpadOne = document.getElementById('one');
-const numpadTwo = document.getElementById('two');
-const numpadThree = document.getElementById('three');
-const numpadFour = document.getElementById('four');
-const numpadFive = document.getElementById('five');
-const numpadSix = document.getElementById('six');
-const numpadSeven = document.getElementById('seven');
-const numpadEight = document.getElementById('eight');
-const numpadNine = document.getElementById('nine');
-const numpadZero = document.getElementById('zero');
-const numpadDot = document.getElementById('dot');
-const addButton = document.getElementById('add');
-const subtractButton = document.getElementById('subtract');
-const multiplyButton = document.getElementById('multiply');
-const divideButton = document.getElementById('divide');
-const CalculateButton = document.getElementById('calculate');
+function OnOverflowChanged() {
+    if (outputBox.scrollHeight > outputBox.clientHeight) {
+        console.log('overflow');
+    }
+}
 
-function operationButton(operationName,operationSign){
-    if(StateMachine == '100'){
-        operation = operationName;
-        StateMachine = '221';
-        outputBox.textContent = operationSign;
-        }
-        else if (StateMachine == '221') {
-            if(operandHold==true){
-                operation = operationName;
-                outputBox.textContent = operationSign}
-            else{
-            result = operations(parseInt(firstInput),parseInt(secondInput),operation);
-            outputBox.textContent = result;
-            firstInput = result;
-            secondInput = '';
+// Auto-scroll function for the statusBox on mouse wheel
+statusBox.addEventListener("wheel", (e) => {
+    statusBox.scrollLeft += e.deltaY;
+}, { passive: true });
+
+// Handle operations
+function operationButton(operationName, operationSign) {
+    OnOverflowChanged();
+
+    switch (StateMachine) {
+        case '100': // Initial state: First input
             operation = operationName;
-            operandHold = true;}
-        }
-        else if (StateMachine == '222') {
+            StateMachine = '221';
+            statusBox.textContent += operationSign;
+            break;
+
+        case '221': // Operation already chosen
+            if (operandHold) { // No second input yet
+                operation = operationName;
+                statusBox.textContent = statusBox.textContent.slice(0, -1) + operationSign; // Replace operation sign
+            } else { // Perform calculation if second input exists
+                result = operations(parseFloat(firstInput), parseFloat(secondInput), operation);
+                firstInput = result;
+                secondInput = '';
+                operation = operationName;
+                operandHold = true;
+                outputBox.textContent = result;
+                statusBox.textContent += operationSign;
+            }
+            break;
+
+        case '222': // After calculation, reset for next input
             firstInput = result;
-            outputBox.textContent = firstInput;
             secondInput = '';
             operation = operationName;
             StateMachine = '221';
-        }
+            outputBox.textContent = firstInput;
+            statusBox.textContent = firstInput + operationSign;
+            break;
+
+        default:
+            console.error('Unknown StateMachine value:', StateMachine);
+    }
+
+    // Auto-scroll
+    statusBox.scrollLeft = statusBox.scrollWidth;
+    outputBox.scrollTop = outputBox.scrollHeight;
 }
 
-
-addButton.addEventListener('click',()=>{
-    operationButton('add','+');
-})
-
-subtractButton.addEventListener('click',()=>{
-    operationButton('subtract','-');
-})
-
-multiplyButton.addEventListener('click',()=>{
-    operationButton('multiply','×');
-})
-
-divideButton.addEventListener('click',()=>{
-    operationButton('divide','÷');
-})
-
-CalculateButton.addEventListener('click',()=>{
-    if(StateMachine == '221'){
-        if(secondInput!=''){
-        result = operations(parseFloat(firstInput),parseFloat(secondInput),operation);
+// Handle calculation on "=" click
+document.getElementById('calculate').addEventListener('click', () => {
+    if (StateMachine === '221' && secondInput !== '') {
+        result = operations(parseFloat(firstInput), parseFloat(secondInput), operation);
         outputBox.textContent = result;
         operandHold = true;
         StateMachine = '222';
-        }
+        statusBox.textContent += '=';
+        statusBox.scrollLeft = statusBox.scrollWidth;
     }
-})
+});
 
-
-
-function operations(first,second,operand){
-    if(operand == 'add'){
-        return first + second;
-    }else if(operand == 'subtract'){
-        return first - second;
-    }else if(operand == 'multiply'){
-        return first * second;
-    }else if(operand == 'divide'){
-        return first / second;
-    }
-    else{
-        return;
+// Operations logic
+function operations(first, second, operand) {
+    switch (operand) {
+        case 'add': return first + second;
+        case 'subtract': return first - second;
+        case 'multiply': return first * second;
+        case 'divide': return second !== 0 ? first / second : 'Error';
+        default: return '';
     }
 }
 
+// Handle number pad input
 function numPadButtons(numpadNumber) {
-    if (StateMachine == '100') {
-        firstInput = firstInput + numpadNumber.textContent;
-        outputBox.textContent = firstInput;
-    } else if (StateMachine == '221') {
-        if(operandHold==true){
-            operandHold=false;
-            }
-        secondInput = secondInput + numpadNumber.textContent;;
-        outputBox.textContent = secondInput;
-    } else if (StateMachine == '222') {
-        firstInput = '';
-        secondInput = '';
-        StateMachine = '100';
-        firstInput = numpadNumber.textContent;
-        outputBox.textContent = firstInput;
+    const numContent = numpadNumber.textContent;
+
+    switch (StateMachine) {
+        case '100': // Initial state: First input
+            firstInput += numContent;
+            outputBox.textContent = firstInput;
+            statusBox.textContent = firstInput;
+            break;
+
+        case '221': // Second input stage
+            if (operandHold) operandHold = false;
+            secondInput += numContent;
+            outputBox.textContent = secondInput;
+            statusBox.textContent += numContent;
+            break;
+
+        case '222': // After calculation, reset for new input
+            firstInput = numContent;
+            secondInput = '';
+            StateMachine = '100';
+            outputBox.textContent = firstInput;
+            statusBox.textContent = firstInput;
+            break;
+
+        default:
+            console.error('Unknown StateMachine value:', StateMachine);
     }
+
+    // Auto-scroll
+    outputBox.scrollTop = outputBox.scrollHeight;
+    statusBox.scrollLeft = statusBox.scrollWidth;
+    OnOverflowChanged();
 }
 
-numpadOne.addEventListener('click', () => {
-  numPadButtons(numpadOne);
-})
+// Event listeners for number pad
+document.querySelectorAll('.numpad').forEach(button => {
+    button.addEventListener('click', () => numPadButtons(button));
+});
 
-numpadTwo.addEventListener('click', () => {
-  numPadButtons(numpadTwo);
-})
-
-numpadThree.addEventListener('click', () => {
-  numPadButtons(numpadThree);
-})
-
-numpadFour.addEventListener('click', () => {
-  numPadButtons(numpadFour);
-})
-
-numpadFive.addEventListener('click', () => {
-  numPadButtons(numpadFive);
-})
-
-numpadSix.addEventListener('click', () => {
-  numPadButtons(numpadSix);
-})
-
-numpadSeven.addEventListener('click', () => {
-  numPadButtons(numpadSeven);
-})
-
-numpadEight.addEventListener('click', () => {
-  numPadButtons(numpadEight);
-})
-
-numpadNine.addEventListener('click', () => {
-  numPadButtons(numpadNine);
-})
-
-numpadZero.addEventListener('click', () => {
-  numPadButtons(numpadZero);
-})
-
-numpadDot.addEventListener('click', () => {
-  numPadButtons(numpadDot);
-})
+// Event listeners for operation pad
+document.querySelectorAll('.operationpad').forEach(button => {
+    button.addEventListener('click', () => {
+        operationButton(button.getAttribute('data-operation'), button.getAttribute('data-sign'));
+    });
+});
