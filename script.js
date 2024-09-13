@@ -243,3 +243,55 @@ document.getElementById('delete').addEventListener('click', () => {
   }
   autoScroll();
 })
+
+// Function to handle keyboard input
+function handleKeyboardInput(event) {
+  const key = event.key;
+
+  switch (key) {
+      case '0':
+      case '1':
+      case '2':
+      case '3':
+      case '4':
+      case '5':
+      case '6':
+      case '7':
+      case '8':
+      case '9':
+          handleNumPadButtonClick(key); // Handle number button click
+          break;
+      case '.':
+          handleNumPadButtonClick('.'); // Handle decimal point
+          break;
+      case '+':
+          handleOperationButton('add', '+'); // Handle addition
+          break;
+      case '-':
+          handleOperationButton('subtract', '-'); // Handle subtraction
+          break;
+      case '*':
+          handleOperationButton('multiply', '×'); // Handle multiplication
+          break;
+      case '/':
+          handleOperationButton('divide', '÷'); // Handle division
+          break;
+      case '=':
+      case 'Enter':
+          calculateButton.click(); // Handle calculation (Enter or =)
+          break;
+      case 'Backspace':
+          document.getElementById('delete').click(); // Handle delete
+          break;
+      case 'Escape':
+          document.getElementById('clear').click(); // Handle clear
+          break;
+      default:
+          return; // Ignore other keys
+  }
+
+  event.preventDefault(); // Prevent default action for the key press
+}
+
+// Attach the keyboard event listener to the document
+document.addEventListener('keydown', handleKeyboardInput);
