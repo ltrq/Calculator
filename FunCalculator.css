@@ -1,0 +1,319 @@
+/* Basic Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Font Faces */
+@font-face {
+    font-family: 'digital-clock-font';
+    src: url('./digital-7 (mono).ttf');
+}
+
+@font-face {
+    font-family: 'calculator-font';
+    src: url('./casio-calculator-font.ttf');
+
+}
+
+.segment-number{
+    font-family: 'calculator-font';
+    font-size: 10px;
+    color:#333;
+}
+
+.slideOutput{
+    font-family: 'calculator-font';
+    font-size: 0.8em;
+    margin: 10px;
+    margin-bottom: 20px;
+}
+/* Calculator Container */
+#calculator {
+    width: 390px;
+    margin: 50px auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    background-color: #f9f9f9;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+/* Output Screen */
+#outputBox {
+    width: 90%;
+    height: 150px;
+    border: 1px solid #ccc;
+    text-align: right;
+    padding: 15px;
+    font-size: 26px;
+    color: #333;
+    background-color: #fff;
+    margin: 0 auto 20px auto;
+    border-radius: 8px;
+    box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+}
+
+#topDisplay {
+    width: 100%;
+    height: 30%;
+    display: flex;
+    justify-content: center;
+}
+
+#RightButton,
+#LeftButton {
+    width: 5%;
+    text-align: center;
+}
+
+#outputDisplay {
+    width: 90%;
+    font-family: 'calculator-font';
+    height: 100%;
+    font-size: 0.75em;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+}
+
+#bottomDisplay {
+    width: 100%;
+    height: 70%;
+    display: flex;
+    flex-direction: column;
+}
+
+#TopButton,
+#BottomButton {
+    height: 15%;
+    text-align: center;
+}
+
+#outputText {
+    width: 100%;
+    font-family: 'digital-clock-font';
+    height: 70%;
+    font-size: 2.2em;
+    overflow-wrap: break-word;
+    white-space: normal;
+    overflow-y: auto;
+}
+
+#RightButton,
+#LeftButton,
+#TopButton,
+#BottomButton {
+    color: #6c757d;
+    font-size: 18px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    text-align: center;
+}
+
+#TopButton {
+    padding-bottom: 6px;
+}
+
+#TopButton:hover,
+#BottomButton:hover,
+#LeftButton:hover,
+#RightButton:hover {
+    background-color: #e9ecef;
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+.slidecontainer {
+    margin-bottom: 20px;
+}
+
+.slider {
+    width: 100%;
+}
+
+/* Wheel Container */
+#wheelcontainer {
+    margin-top: 30px;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+/* Arrow Styles */
+#arrow {
+    width: 5%;
+    height: 10%;
+    margin-left: auto;
+    margin-right: auto;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 20px solid #333;
+    margin-bottom: 10px;
+    top: -30px;
+    left: 50%;
+    transform: rotate(180deg);
+    z-index: 20;
+}
+
+/* Wheel Styles */
+#wheel {
+    margin-left: auto;
+    margin-right: auto;
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    background-image: conic-gradient(
+        rgba(253, 107, 129, 0.8) 0 90deg,
+        rgba(107, 218, 255, 0.8) 0 180deg,
+        rgba(122, 255, 133, 0.8) 0 270deg,
+        rgba(250, 240, 102, 0.8) 0 360deg
+    );
+    position: relative;
+    z-index: 10;
+}
+
+/* Segment Styles */
+.segment {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 22px;
+    font-weight: bold;
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
+    transform-origin: center center;
+}
+
+#segment1 { transform: rotate(0deg); }
+#segment2 { transform: rotate(90deg); }
+#segment3 { transform: rotate(180deg); }
+#segment4 { transform: rotate(270deg); }
+
+/* Number Styles Inside Each Segment */
+.segment-number {
+    position: absolute;
+    transform: rotate(-90deg) translateY(-50px) translateX(-50px);
+    font-size: 22px;
+}
+
+/* Spin Button */
+#wheelcontainer {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center align children horizontally */
+    justify-content: center; /* Center align children vertically */
+    position: relative;
+    margin-top: 20px; /* Add some space at the top if needed */
+}
+
+/* Spin Button */
+#wheelbutton {
+    padding: 12px 24px;
+    font-size: 18px;
+    background-color: #4CAF50; /* Soft green */
+    color: white;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    margin-top: 20px; /* Space between the wheel and button */
+    transform: translateX(75%);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+#wheelbutton:hover {
+    background-color: #45a049; /* Darker green on hover */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Result Display */
+#resultDisplay {
+    margin-top: 20px;
+    text-align: center;
+}
+
+#resultText {
+    font-size: 22px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Back Button */
+#OldMode {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+}
+
+.OldMode {
+    padding: 12px 24px;
+    font-size: 16px;
+    background-color: #333;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.OldMode:hover {
+    background-color: #555;
+}
+
+/* Container for buttons */
+#buttons {
+    display: flex;
+    justify-content: center; /* Center buttons horizontally */
+    gap: 15px; /* Space between buttons */
+    margin-top: 20px; /* Space above the button container */
+}
+
+/* Apply consistent styling to both buttons */
+#buttons button {
+    color: white;
+    padding: 12px 24px;
+    text-align: center;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Individual button styles */
+#calculate {
+    background-color: #6abf69; /* Soft green */
+    border: 1px solid #5aa85e; /* Slightly darker border */
+}
+
+#calculate:hover {
+    background-color: #5da758; /* Darker green on hover */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+#clear {
+    background-color: #f86c6b; /* Soft red */
+    border: 1px solid #e74c3c; /* Slightly darker border */
+}
+
+#clear:hover {
+    background-color: #e64a40; /* Darker red on hover */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}

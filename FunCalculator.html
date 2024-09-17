@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fun Calculator</title>
+    <link rel="stylesheet" href="./FunCalculator.css">
+</head>
+<body>
+    <div id="calculator">
+        <!-- Output Box -->
+        <div id="outputBox">
+            <div id="topDisplay">
+                <div id="LeftButton"></div>
+                <div id="outputDisplay">Fun Spinny</div>
+                <div id="RightButton"></div>
+            </div>
+            <div id="bottomDisplay">
+                <div id="TopButton"></div>
+                <div id="outputText">Calculator</div>
+                <div id="BottomButton"></div>
+            </div>
+        </div>
+
+        <!-- Slider Containers -->
+        <div class="slidecontainer">
+            <input type="range" min="0" max="10000" value="0" class="slider" id="myRange">
+            <p class="slideOutput">Value: <span id="demo"></span></p>
+            <input type="range" min="0" max="100" value="0" class="slider" id="myRange2">
+            <p class="slideOutput">Scale: <span id="demo2"></span></p>
+            <p class="slideOutput">Input Value: <span id="demo3"></span></p>
+        </div>
+
+        <!-- Wheel with segments -->
+        <div class="wheelcontainer">
+            
+            <div id="wheel">
+                <div class="segment" id="segment1">
+                    <span class="segment-number">+</span>
+                </div>
+                <div class="segment" id="segment2">
+                    <span class="segment-number">-</span>
+                </div>
+                <div class="segment" id="segment3">
+                    <span class="segment-number">*</span>
+                </div>
+                <div class="segment" id="segment4">
+                    <span class="segment-number">÷</span>
+                </div>
+            </div>
+            <div id="arrow"></div>
+            <button id="wheelbutton" onclick="spinWheel()">Spin wheel</button>
+            
+            <!-- Display the result -->
+            <div id="resultDisplay">
+                <p id="resultText">Spin the wheel to get an operation!</p>
+            </div>
+        </div>
+        <div id="buttons">
+            <button id="calculate">Calculate</button>
+            <button id="clear">Clear</button>
+        </div>
+    </div>
+
+    <!-- Go Back Button -->
+    <div id="OldMode">
+        <a href="index.html" target="_self">
+            <button class="OldMode">Go Back Please!</button>
+        </a>
+    </div>
+
+</body>
+<script src="FunCalculator.js"></script>
+</html>

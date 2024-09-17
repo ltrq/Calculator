@@ -178,3 +178,29 @@ button:hover {
         font-size: 20px;
     }
 }
+
+.NewMode{
+    height: 50px;
+    width: 200px;
+    border: #f0f349 2px solid;
+    border-radius: 10px;
+    font-size: 24px;
+    font-weight: bold;
+    background-color: #ffe600;
+    color: #ffffff;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    margin-top: 20px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.NewMode:hover{
+    background-color: #e2bc00;
+    color: #ffffff;
+}
+
+#NewMode{
+    text-align: center;
+    justify-content: center;
+}
