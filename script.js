@@ -60,7 +60,13 @@ function handleOperationButton(operationName, operationSign) {
         operation = operationName;
         operandHold = true;
         outputBox.textContent = result;
-        statusBox.textContent += operationSign;
+        if(operation=="multiply" || operation=="divide"){
+          statusBox.textContent = "("+statusBox.textContent+")" + operationSign;
+        }
+        else{
+          statusBox.textContent += operationSign;
+        }
+        
       }
       break;
 

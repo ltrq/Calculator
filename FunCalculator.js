@@ -148,7 +148,12 @@ function handleOperationButton(operationName) {
                 operationSign = getOperationSign(operationName);
                 operandHold = true;
                 outputBox.textContent = result;
-                statusBox.textContent += operationSign;
+                if(operation=="Multiplication" || operation=="Division"){
+                    statusBox.textContent = "("+statusBox.textContent+")" + operationSign;
+                  }
+                  else{
+                    statusBox.textContent += operationSign;
+                  }
             }
             break;
 
