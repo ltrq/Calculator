@@ -41,15 +41,18 @@ function updateButtonVisibility() {
 function handleOperationButton(operationName, operationSign) {
   switch (stateMachine) {
     case '100': // Initial state: First input
+      if(statusBox.textContent != "welcome to my"){
       operation = operationName;
       stateMachine = '221';
-      statusBox.textContent += operationSign;
+      statusBox.textContent += operationSign;}
       break;
 
     case '221': // Operation already chosen
       if (operandHold) { // No second input yet
+        if(statusBox.textContent != "welcome to my"){
         operation = operationName;
         statusBox.textContent = statusBox.textContent.slice(0, -1) + operationSign; // Replace operation sign
+        }
       } else { // Perform calculation if second input exists
         result = performOperation(parseFloat(firstInput), parseFloat(secondInput), operation);
         firstInput = result;

@@ -25,7 +25,7 @@ slider2.oninput = () => {
 function updateCalculation() {
     const value1 = parseInt(demo1.innerHTML);
     const value2 = parseInt(demo2.innerHTML);
-    demo3.innerHTML = (value1 * Math.pow(10, value2) / 1000).toFixed(2);
+    demo3.innerHTML = (value1 * Math.pow(10, value2) / 1000).toFixed(3);
     handleInput(demo3.innerHTML);
 }
 
@@ -34,7 +34,6 @@ const wheelEl = document.getElementById("wheel");
 const sliceSize = 360 / 4;
 
 function spinWheel() {
-    const resultDisplay = document.getElementById("resultDisplay");
     const resultText = document.getElementById("resultText");
 
     // Reset wheel and animation
@@ -55,8 +54,12 @@ function spinWheel() {
     wheelEl.style.transition = "transform 5s ease-out";
     wheelEl.style.transform = `rotate(-${targetRotation}deg)`;
 
+    (statusBox.textContent!='Fun Spinny') ? resultText.innerText = 'LET THE WHEEL DECIDES!' : resultText.innerText = resultText.innerText;
+    
+
     // Function to be called when the animation ends
     function onTransitionEnd() {
+        if(statusBox.textContent!='Fun Spinny'){
         const totalDegrees = targetRotation % 360;
         const result = totalDegrees < 90 ? "Addition" :
                         totalDegrees < 180 ? "Subtraction" :
@@ -68,6 +71,10 @@ function spinWheel() {
 
         // Remove event listener to avoid multiple calls
         wheelEl.removeEventListener('transitionend', onTransitionEnd);
+        }
+        else{
+            resultText.innerText = 'Pick your Input first!';
+        }
     }
 
     // Add event listener to update result display after the animation ends
@@ -116,23 +123,29 @@ function getOperationSign(operationName) {
 }
 
 function handleOperationButton(operationName) {
-    const operationSign = getOperationSign(operationName);
+    let operationSign=''; 
     switch (stateMachine) {
         case '100': // Initial state
-            operation = operationName;
+            if(statusBox.textContent != "Fun Spinny"){
             stateMachine = '221';
-            statusBox.textContent += operationSign;
+            operation = operationName;
+            operationSign = getOperationSign(operationName);
+            statusBox.textContent += operationSign;}
             break;
 
         case '221': // Operation already chosen
             if (operandHold) {
+                if(statusBox.textContent != "Fun Spinny"){
+                operationSign = getOperationSign(operationName);
                 operation = operationName;
                 statusBox.textContent = statusBox.textContent.slice(0, -1) + operationSign; // Replace operation sign
+                }
             } else {
-                result = performOperation(parseFloat(firstInput), parseFloat(secondInput), operation);
+                result = performOperation(parseFloat(firstInput), parseFloat(secondInput), operationName);
                 firstInput = result;
                 secondInput = '';
                 operation = operationName;
+                operationSign = getOperationSign(operationName);
                 operandHold = true;
                 outputBox.textContent = result;
                 statusBox.textContent += operationSign;
@@ -191,7 +204,17 @@ function handleInput(numContent) {
         case '221': // Second input stage
             if (operandHold) operandHold = false;
             outputBox.textContent = numContent;
-            statusBox.textContent = statusBox.textContent.replace(secondInput, '') + numContent;
+            if (secondInput === '') {
+                statusBox.textContent += numContent;
+            } else {
+                const lastIndex = statusBox.textContent.lastIndexOf(secondInput);
+                if (lastIndex !== -1) {
+                    // Replace the last occurrence of secondInput
+                    statusBox.textContent = statusBox.textContent.substring(0, lastIndex) + numContent + statusBox.textContent.substring(lastIndex + secondInput.length);
+                } else {
+                    statusBox.textContent += numContent;
+                }
+            }
             secondInput = numContent;
             break;
 

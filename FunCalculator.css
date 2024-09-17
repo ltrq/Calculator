@@ -120,12 +120,6 @@
     padding-bottom: 6px;
 }
 
-#TopButton:hover,
-#BottomButton:hover,
-#LeftButton:hover,
-#RightButton:hover {
-    background-color: #e9ecef;
-}
 
 ::-webkit-scrollbar {
     display: none;
@@ -225,7 +219,8 @@
 #wheelbutton {
     padding: 12px 24px;
     font-size: 18px;
-    background-color: #4CAF50; /* Soft green */
+    font-weight: bolder;
+    background-color: #bb39f7; /* Soft green */
     color: white;
     border: none;
     border-radius: 12px;
@@ -237,7 +232,7 @@
 }
 
 #wheelbutton:hover {
-    background-color: #45a049; /* Darker green on hover */
+    background-color: #972dc9; /* Darker green on hover */
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 }
 
@@ -265,7 +260,8 @@
 .OldMode {
     padding: 12px 24px;
     font-size: 16px;
-    background-color: #333;
+    font-weight: bolder;
+    background-color: #fff241;
     color: white;
     border: none;
     border-radius: 8px;
@@ -274,7 +270,7 @@
 }
 
 .OldMode:hover {
-    background-color: #555;
+    background-color: #d3c939;
 }
 
 /* Container for buttons */
@@ -295,6 +291,7 @@
     border-radius: 12px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    font-weight: bolder;
 }
 
 /* Individual button styles */
